@@ -1,0 +1,56 @@
+:root{
+	--fore: #dddddd;
+	--back: #252525;
+}
+/*tags*/
+body {
+	background-color: var(--back);
+}
+
+h1,h2{
+	color:var(--fore);
+	font-family:Courier New;
+	text-align:left;
+	padding:none;
+	margin-bottom:2;
+}
+/*menu stuff*/
+#menu{
+	float: left;
+	border:none;
+	clear: both;
+	/* clear:both makes sure the content div doesn't float next to this one but stays under it */
+	width:100%;
+	padding: 10px ;
+	/*background-color: #000;*/
+	text-align: left;
+	font-size: 85%;
+}
+
+#menu a:hover {
+	background-color: var(--fore);
+	color:var(--back);
+}
+
+.menuBtn{
+	background-color: var(--back);
+	border: 1px solid var(--fore);
+	color: var(--fore);
+	font-family: Courier New;
+	font-size: 14px;
+	padding: 3px;
+	text-decoration: none;
+}
+/**/
+#content{
+	border:none;
+	font-family:Courier new;
+	color: var(--fore);
+}
+
+#footer {
+	clear: both;
+	color:var(--fore);
+	font-size: 8px;
+	padding: 2px 2px 0px 0px;
+}
