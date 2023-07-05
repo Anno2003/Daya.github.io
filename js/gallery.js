@@ -151,24 +151,23 @@ line.scale.set( 1, 1, 1 );
 scene.add( line );
 
 // HANDLER FOR CLICKING OBJECTS ////
-var current_ctn;
 function model_click(model){
 	let x = "["+model.id+"]-"+model.name;
 	console.log(x);
 	if(model.name == "content1"){
-		current_ctn = document.getElementById("ctn1");
-		current_ctn.style.display = "block";
+		let modal = new bootstrap.Modal(document.getElementById("ctn1"));
+		modal.toggle();
 	}
 	if(model.name == "content2"){
-		current_ctn = document.getElementById("ctn2");
-		current_ctn.style.display = "block";
+		let modal = new bootstrap.Modal(document.getElementById("ctn2"));
+		modal.toggle();
+	}
+	if(model.name == "content3"){
+		let modal = new bootstrap.Modal(document.getElementById("ctn3"));
+		modal.toggle();
 	}
 }
-window.onclick = function(event) {
-  if (event.target == current_ctn) {
-    current_ctn.style.display = "none";
-  }
-}
+
 // HANDLE RESIZE ////
 window.addEventListener( 'resize', onWindowResize, false );
 
