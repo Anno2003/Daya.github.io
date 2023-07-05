@@ -30,11 +30,11 @@ var current_ctn;
 function model_click(model){
 	let x = "["+model.id+"]-"+model.name;
 	console.log(x);
-	if(model.id == 11){
+	if(model.name == "cube1"){
 		current_ctn = document.getElementById("ctn1");
 		current_ctn.style.display = "block";
 	}
-	if(model.id == 12){
+	if(model.name == "cube2"){
 		current_ctn = document.getElementById("ctn2");
 		current_ctn.style.display = "block";
 	}
@@ -75,6 +75,8 @@ cube2.addEventListener('mousedown', (event) => {
 	event.target.scale.set(1.1, 1.1, 1.1);
 	model_click(event.target);
 });
+cube.name = "cube1";
+cube2.name = "cube2";
 cube2.position.set(0,5,0);
 scene.add( cube );
 scene.add(cube2);
