@@ -4,10 +4,60 @@
 		<title>Test</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
+		<style>
+			/* The Modal (background) */
+			.modal {
+				display: none; /* Hidden by default */
+				position: fixed; /* Stay in place */
+				z-index: 1; /* Sit on top */
+				padding-top: 100px; /* Location of the box */
+				left: 0;
+				top: 0;
+				width: 100%; /* Full width */
+				height: 100%; /* Full height */
+				overflow: auto; /* Enable scroll if needed */
+				background-color: rgb(0,0,0); /* Fallback color */
+				background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+			}
+
+			/* Modal Content */
+			.modal-content {
+				background-color: #fefefe;
+				margin: auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 80%;
+			}
+		</style>
 	</head>
 
 	<body style="margin: 0;">
 		<canvas id="bg"></canvas>
+		<div id="ctn1" class="modal">
+			<div class="modal-content">
+				<h2>TESTING1!!</h2><hr>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+				<p>TEST1...</p>
+			</div>
+		</div>
+		<div id="ctn2" class="modal">
+			<div class="modal-content">
+				<h2>TESTING2!!</h2><hr>
+				<p>Test2...<p>
+				<p>Test2...<p>
+				<p>Test2...<p>
+				<p>Test2...<p>
+				<p>Test2...<p>
+				<p>Test2...<p>
+				<p>Test2...<p>
+			</div>
+		</div>
 	</body>
 	<script type="module" src="./js/gallery.js"></script>
 </html>

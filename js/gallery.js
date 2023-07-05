@@ -1,6 +1,7 @@
 // LIBRARY ////
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { MapControls } from 'three/addons/controls/MapControls.js';
 import { InteractionManager } from 'three.interactive';
 
 // SETUP SCENE&CAMERA ////
@@ -19,6 +20,30 @@ const interactionManager = new InteractionManager(
   renderer.domElement
 );
 
+// SETUP CONTROLS ////
+const controls = new MapControls( camera, renderer.domElement );
+controls.enableDamping = true;
+controls.update();
+
+// event handler ////
+var current_ctn;
+function model_click(model){
+	let x = "["+model.id+"]-"+model.name;
+	console.log(x);
+	if(model.id == 11){
+		current_ctn = document.getElementById("ctn1");
+		current_ctn.style.display = "block";
+	}
+	if(model.id == 12){
+		current_ctn = document.getElementById("ctn2");
+		current_ctn.style.display = "block";
+	}
+}
+window.onclick = function(event) {
+  if (event.target == current_ctn) {
+    current_ctn.style.display = "none";
+  }
+}
 // CREATE & ADD OBJECTS TO SCENE ////
 // GRID
 const gridHelper = new THREE.GridHelper( 25, 10 );
@@ -26,6 +51,8 @@ scene.add( gridHelper );
 // BOX
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const material = new THREE.MeshBasicMaterial( { color: 0xbe5252 } );
+const material2 = new THREE.MeshBasicMaterial( { color: 0x00fe00 } );
+
 const cube = new THREE.Mesh( geometry, material );
 cube.addEventListener('mouseover', (event) => {
   event.target.material.color.set(0xff0000);
@@ -36,19 +63,23 @@ cube.addEventListener('mouseout', (event) => {
   document.body.style.cursor = 'default';
 });
 cube.addEventListener('mousedown', (event) => {
-  event.target.scale.set(1.1, 1.1, 1.1);
+	event.target.scale.set(1.1, 1.1, 1.1);
+	model_click(event.target);
 });
 cube.addEventListener('click', (event) => {
   event.target.scale.set(1.0, 1.0, 1.0);
 });
 
+const cube2 = new THREE.Mesh(geometry,material2);
+cube2.addEventListener('mousedown', (event) => {
+	event.target.scale.set(1.1, 1.1, 1.1);
+	model_click(event.target);
+});
+cube2.position.set(0,5,0);
 scene.add( cube );
+scene.add(cube2);
+interactionManager.add(cube2);
 interactionManager.add(cube);
-// SETUP CONTROLS ////
-const controls = new OrbitControls( camera, renderer.domElement );
-
-controls.update();
-
 // HANDLE RESIZE ////
 window.addEventListener( 'resize', onWindowResize, false );
 

@@ -6,6 +6,7 @@
 body {
 	margin:5%;
 	background-color: var(--back);
+	font-family:Courier New;
 }
 
 h1,h2{
