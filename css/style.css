@@ -101,3 +101,11 @@ h1,h2{
 	margin-right: auto;
 	width: 25%;
 }
+
+.label{
+	marginTop:-1em;
+	margin-left = 15px;
+	margin-right = 15px;
+	border-radius: 10%;
+	background:rgba(50,50,50,0.8);
+	color:#ffffff;
