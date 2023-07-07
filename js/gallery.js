@@ -104,9 +104,10 @@ function addCube(name,clr=0xfefefe,position,size=1.0){
 	interactionManager.add(cube);
 	return (cube);
 }
-var cube  = addCube("content1",0xbe5252,new THREE.Vector3(0,5,0),1.5);
-var cube2 = addCube("content2",0x7fe384,new THREE.Vector3(THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10)));
+var cube  = addCube("RumahNoto",0xbe5252,new THREE.Vector3(0,5,0),1.5);
+var cube2 = addCube("CreativeMinority",0x34549e,new THREE.Vector3(THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10)));
 var cube3 = addCube("About",0xfdeacc,new THREE.Vector3(10,1,10));
+var cube4 = addCube("content3",0x0ebe2e,new THREE.Vector3(THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10)));
 
 // LINES
 const matLine = new LineMaterial( {
@@ -189,7 +190,8 @@ function loadFont(path) {
 		});
 }
 
-loadFont("../fonts/droid_sans_regular.typeface.json");
+import fontUrl from '../fonts/droid_sans_regular.typeface.json?url'
+loadFont(fontUrl);
 // HANDLE RESIZE ////
 window.addEventListener( 'resize', onWindowResize, false );
 
