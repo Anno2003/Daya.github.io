@@ -13,8 +13,11 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 // SETUP SCENE&CAMERA ////
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set( 0, 18, 25 );
+const aspect = window.innerWidth / window.innerHeight;
+//const camera = new THREE.PerspectiveCamera( 75,aspect, 0.1, 1000 );
+const frustumSize = 25;
+const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 100 );
+camera.position.set( -15, 18, 25 );
 camera.lookAt( 0, 5, 0 );
 // SETUP RENDERER ////
 const renderer = new THREE.WebGLRenderer({canvas: document.querySelector('#bg'),});
@@ -66,28 +69,54 @@ const gridHelper = new THREE.GridHelper( 25, 10 );
 scene.add( gridHelper );
 // MATERIAL&GEOMETRY FOR CUBE
 // CUBES
-function addCube(name,clr=0xfefefe,position,size=1.0){
-	const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+function addMesh(name,clr=0xfefefe,position=new THREE.Vector3(0,0,0),size=1.0,type="cube",wireframe = false){
+	var geometry;
+	switch(type){
+		case "cube":
+			geometry = new THREE.BoxGeometry( size, size, size );
+			wireframe = true;
+			break;
+		case "tetra":
+			geometry = new THREE.TetrahedronGeometry(size,0);
+			break;
+		case "octa":
+			geometry = new THREE.OctahedronGeometry(size,0);
+			break;
+		case "torus":
+			geometry = new THREE.TorusGeometry( size, 0.2, 16, 10 );
+			break;
+		case "knot":
+			geometry = new THREE.TorusKnotGeometry( size-0.5, 0.3, 100, 10 ); 
+			break;
+	}
+	
 	const material = new THREE.MeshBasicMaterial( { color: clr } );
-	const cube = new THREE.Mesh( new THREE.BoxGeometry(size,size,size), material );
+	const mesh = new THREE.Mesh( geometry, material );
 	const outlineMaterial = new THREE.MeshBasicMaterial( { color: 0x202020, side: THREE.BackSide } );
 	var outlineMesh = new THREE.Mesh( geometry, outlineMaterial );
-	outlineMesh.position.set(cube.position.x,cube.position.y,cube.position.z);
-	outlineMesh.scale.multiplyScalar(size+0.15);
-	cube.add( outlineMesh );
+	outlineMesh.position.set(mesh.position.x,mesh.position.y,mesh.position.z);
+	outlineMesh.scale.multiplyScalar(1.1);
+	mesh.add( outlineMesh );
 	
-	cube.addEventListener('mouseover', (event) => {
+	if(wireframe){
+		const wire = new THREE.EdgesGeometry( geometry );
+		const line = new THREE.LineSegments( wire,new THREE.LineBasicMaterial( { color: 0x000000 } ) );
+		mesh.add( line );
+	}
+	
+	mesh.addEventListener('mouseover', (event) => {
 		event.target.material.color.set(0xf0f0f0);
 		document.body.style.cursor = 'pointer';
 	});
-	cube.addEventListener('mouseout', (event) => {
+	mesh.addEventListener('mouseout', (event) => {
 		event.target.material.color.set(clr);
 		document.body.style.cursor = 'default';
 	});
-	cube.addEventListener('mousedown', (event) => {
+	mesh.addEventListener('mousedown', (event) => {
 		event.target.scale.set(1.1, 1.1, 1.1);
 	});
-	cube.addEventListener('click', (event) => {
+	mesh.addEventListener('click', (event) => {
+		event.stopPropagation();
 		event.target.scale.set(1.0, 1.0, 1.0);
 		model_click(event.target);
 	});
@@ -96,18 +125,20 @@ function addCube(name,clr=0xfefefe,position,size=1.0){
 	cubeDiv.textContent = name;
 	var cubeLabel = new CSS2DObject(cubeDiv);
 	cubeLabel.position.set(0, 1, 0);
-	cube.attach(cubeLabel);
+	mesh.attach(cubeLabel);
 	
-	cube.name = name;
-	cube.position.set(position.x,position.y,position.z);
-	scene.add( cube );
-	interactionManager.add(cube);
-	return (cube);
+	mesh.name = name;
+	mesh.position.set(position.x,position.y,position.z);
+	scene.add( mesh );
+	interactionManager.add(mesh);
+	return (mesh);
 }
-var cube  = addCube("RumahNoto",0xbe5252,new THREE.Vector3(0,5,0),1.5);
-var cube2 = addCube("CreativeMinority",0x34549e,new THREE.Vector3(THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10)));
-var cube3 = addCube("About",0xfdeacc,new THREE.Vector3(10,1,10));
-var cube4 = addCube("content3",0x0ebe2e,new THREE.Vector3(THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10),THREE.MathUtils.randFloat(0, 10)));
+addMesh("RumahNoto"       ,0xbe5252,new THREE.Vector3(0,5,0),1.5,"octa",true);
+addMesh("CreativeMinority",0x34549e,new THREE.Vector3(-5,8,-1));
+addMesh("About"           ,0xfdeacc,new THREE.Vector3(10,1,10),1.5,"tetra");
+addMesh("Kunjungan"       ,0x0ebe2e,new THREE.Vector3(5,6,3));
+addMesh("LambangUKSW"     ,0x6705ad,new THREE.Vector3(-7,6,4));
+addMesh("Perpustakaan"    ,0xf0a13a,new THREE.Vector3(1,8,-4));
 
 // LINES
 const matLine = new LineMaterial( {
@@ -130,8 +161,10 @@ function addLine(from,to){
 	line.scale.set( 1, 1, 1 );
 	scene.add( line );
 }
-addLine(cube.position,cube2.position);
-
+addLine(scene.getObjectByName("RumahNoto").position,scene.getObjectByName("CreativeMinority").position);
+addLine(scene.getObjectByName("RumahNoto").position,scene.getObjectByName("Kunjungan").position);
+addLine(scene.getObjectByName("RumahNoto").position,scene.getObjectByName("Perpustakaan").position);
+addLine(scene.getObjectByName("CreativeMinority").position,scene.getObjectByName("LambangUKSW").position);
 // HANDLER FOR CLICKING OBJECTS ////
 function toggle_content(dom){
 	let modal = new bootstrap.Modal(dom);
