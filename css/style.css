@@ -4,7 +4,9 @@
 }
 /*tags*/
 body {
-	margin:5%;
+	margin-top:5%;
+	margin-left:15%;
+	margin-right:15%;
 	background-color: var(--back);
 	font-family:Courier New;
 }
