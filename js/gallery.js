@@ -113,6 +113,7 @@ function addMesh(name,clr=0xfefefe,position=new THREE.Vector3(0,0,0),size=1.0,ty
 		document.body.style.cursor = 'default';
 	});
 	mesh.addEventListener('mousedown', (event) => {
+		event.stopPropagation();
 		event.target.scale.set(1.1, 1.1, 1.1);
 	});
 	mesh.addEventListener('click', (event) => {
@@ -229,7 +230,14 @@ loadFont(fontUrl);
 window.addEventListener( 'resize', onWindowResize, false );
 
 function onWindowResize(){
-    camera.aspect = window.innerWidth / window.innerHeight;
+	var aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = aspect;
+  
+	camera.left = frustumSize * aspect / - 2;
+	camera.right = frustumSize * aspect / 2;
+	camera.top = frustumSize / 2;
+	camera.bottom = - frustumSize / 2;
+
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
